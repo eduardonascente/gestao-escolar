@@ -1,0 +1,40 @@
+package com.gestaoescolar.controller;
+
+import com.gestaoescolar.model.Professor;
+import com.gestaoescolar.service.ProfessorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/professores")
+public class ProfessorController {
+
+    @Autowired
+    private ProfessorService professorService;
+
+    // Endpoint para cadastrar um professor
+    @PostMapping
+    public String cadastrarProfessor(@RequestBody Professor professor) {
+        return professorService.cadastrarProfessor(professor);
+    }
+
+    // Endpoint para listar todos os professores
+    @GetMapping
+    public List<Professor> listarProfessores() {
+        return professorService.listarProfessores();
+    }
+
+    // Endpoint para buscar um professor pelo ID
+    @GetMapping("/{id}")
+    public Professor buscarProfessorPorId(@PathVariable int id) {
+        return professorService.buscarProfessorPorId(id);
+    }
+
+    // Endpoint para remover um professor pelo ID
+    @DeleteMapping("/{id}")
+    public String removerProfessor(@PathVariable int id) {
+        return professorService.removerProfessor(id);
+    }
+}
