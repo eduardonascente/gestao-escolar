@@ -1,0 +1,40 @@
+package com.gestaoescolar.controller;
+
+import com.gestaoescolar.model.Aluno;
+import com.gestaoescolar.service.AlunoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/alunos")
+public class AlunoController {
+
+    @Autowired
+    private AlunoService alunoService;
+
+    // Endpoint para cadastrar um aluno
+    @PostMapping
+    public String cadastrarAluno(@RequestBody Aluno aluno) {
+        return alunoService.cadastrarAluno(aluno);
+    }
+
+    // Endpoint para listar todos os alunos
+    @GetMapping
+    public List<Aluno> listarAlunos() {
+        return alunoService.listarAlunos();
+    }
+
+    // Endpoint para buscar um aluno pelo ID
+    @GetMapping("/{id}")
+    public Aluno buscarAlunoPorId(@PathVariable int id) {
+        return alunoService.buscarAlunoPorId(id);
+    }
+
+    // Endpoint para remover um aluno pelo ID
+    @DeleteMapping("/{id}")
+    public String removerAluno(@PathVariable int id) {
+        return alunoService.removerAluno(id);
+    }
+}
