@@ -1,0 +1,55 @@
+package com.gestaoescolar.service;
+
+import com.gestaoescolar.model.Aluno;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class AlunoService {
+
+    private List<Aluno> alunos = new ArrayList<>();
+
+    // Método para cadastrar um aluno
+    public String cadastrarAluno(Aluno aluno) {
+        if (aluno.getNome() == null || aluno.getNome().isEmpty()) {
+            return "Erro: Nome do aluno não pode estar vazio.";
+        }
+        if (cpfJaExiste(aluno.getCpf())) {
+            return "Erro: CPF já cadastrado.";
+        }
+        alunos.add(aluno);
+        return "Aluno cadastrado com sucesso!";
+    }
+
+    // Método para listar todos os alunos
+    public List<Aluno> listarAlunos() {
+        return alunos;
+    }
+
+    // Método para buscar um aluno pelo ID
+    public Aluno buscarAlunoPorId(int id) {
+        return alunos.stream()
+                .filter(aluno -> aluno.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Método para remover um aluno pelo ID
+    public String removerAluno(int id) {
+        Aluno aluno = buscarAlunoPorId(id);
+        if (aluno != null) {
+            alunos.remove(aluno);
+            return "Aluno removido com sucesso!";
+        } else {
+            return "Erro: Aluno não encontrado.";
+        }
+    }
+
+    // Método para verificar se um CPF já existe
+    private boolean cpfJaExiste(String cpf) {
+        return alunos.stream()
+                .anyMatch(aluno -> aluno.getCpf().equals(cpf));
+    }
+}
