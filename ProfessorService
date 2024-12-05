@@ -1,0 +1,55 @@
+package com.gestaoescolar.service;
+
+import com.gestaoescolar.model.Professor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class ProfessorService {
+
+    private List<Professor> professores = new ArrayList<>();
+
+    // Método para cadastrar um professor
+    public String cadastrarProfessor(Professor professor) {
+        if (professor.getNome() == null || professor.getNome().isEmpty()) {
+            return "Erro: Nome do professor não pode estar vazio.";
+        }
+        if (cpfJaExiste(professor.getCpf())) {
+            return "Erro: CPF já cadastrado.";
+        }
+        professores.add(professor);
+        return "Professor cadastrado com sucesso!";
+    }
+
+    // Método para listar todos os professores
+    public List<Professor> listarProfessores() {
+        return professores;
+    }
+
+    // Método para buscar um professor pelo ID
+    public Professor buscarProfessorPorId(int id) {
+        return professores.stream()
+                .filter(professor -> professor.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Método para remover um professor pelo ID
+    public String removerProfessor(int id) {
+        Professor professor = buscarProfessorPorId(id);
+        if (professor != null) {
+            professores.remove(professor);
+            return "Professor removido com sucesso!";
+        } else {
+            return "Erro: Professor não encontrado.";
+        }
+    }
+
+    // Método para verificar se um CPF já existe
+    private boolean cpfJaExiste(String cpf) {
+        return professores.stream()
+                .anyMatch(professor -> professor.getCpf().equals(cpf));
+    }
+}
